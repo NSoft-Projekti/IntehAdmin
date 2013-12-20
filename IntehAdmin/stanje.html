@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<div id="page">
+
+    <div id="header">
+        <img src="intech_logo.png" id="intech_logo" />
+    </div>
+
+
+
+    <div id="left">
+        <p id="imeKorisnika">Ime Korisnika</p>
+    </div>
+
+
+    <div id="right">
+
+
+
+        <form action="proba.php" method="POST">
+
+            <table border="1" id="table_otpremnica">
+
+
+                <tr>
+                    <th>ID Otpremnice</th><th><input type="text" name="id_otpremnice"></th></tr>
+                <th>ID Artikla</th><th><input type="text" name="idartikla"></th></tr>
+                <th>Naziv artikla</th><th><input type="text" name="naziv_artikla"></th></tr>
+                <th>Kolicina</th><th><input type="text" name="kolicina"></th></tr>
+                <th>Datum</th><th><input type="date" name="datum"></th></tr>
+                <th>Vrijeme</th><th><input type="time" name="vrijeme"></th></tr>
+                </tr>
+            </table>
+
+            <input type="button" value="Posalji" name="posaljiOtpremnicu" id="posaljiOtpremnicu"/>
+
+
+        </form>
+
+
+
+
+
+    </div>
+</div>
+</body>
+
+</html>
