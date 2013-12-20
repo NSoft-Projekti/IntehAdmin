@@ -12,6 +12,5 @@ $con = mysql_connect($mysql_host, $mysql_user, $mysql_pass) or die ("Can't conne
 mysql_select_db($mysql_db) or die($conn_error);
 
 echo'connecteddddd';
-echo'</br>';
-echo'</br>';
+
 ?>
