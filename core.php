@@ -11,4 +11,3 @@ function loggedin(){
         return false;
     }
 }
-?>
