@@ -1,0 +1,114 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`artikli`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`artikli` (
+  `idartikli` INT NOT NULL AUTO_INCREMENT,
+  `naziv_artikla` VARCHAR(45) NULL,
+  `prodajna_cijena` INT NULL,
+  `nabavna_cijena` INT NULL,
+  PRIMARY KEY (`idartikli`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tip_dokumenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`tip_dokumenta` (
+  `idtip_dokumenta` INT NOT NULL,
+  `naziv_dokumenta` VARCHAR(45) NULL,
+  PRIMARY KEY (`idtip_dokumenta`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`dobavljaci`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`dobavljaci` (
+  `iddobavljaci` INT NOT NULL,
+  `naziv_dobavljaca` VARCHAR(45) NULL,
+  PRIMARY KEY (`iddobavljaci`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`korisnici`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`korisnici` (
+  `idkorisnici` INT NOT NULL,
+  `ime` VARCHAR(45) NULL,
+  `prezime` VARCHAR(45) NULL,
+  `username` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  `zanimanje` VARCHAR(45) NULL,
+  PRIMARY KEY (`idkorisnici`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`dokument`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`dokument` (
+  `iddokument` INT NOT NULL AUTO_INCREMENT,
+  `tip_dokumenta_idtip_dokumenta` INT NOT NULL,
+  `datum` DATE NULL,
+  `vrijeme` TIME NULL,
+  `dobavljaci_iddobavljaci` INT NOT NULL,
+  `zanimanje_idzanimanje` INT NOT NULL,
+  `korisnici_idkorisnici` INT NOT NULL,
+  PRIMARY KEY (`iddokument`, `tip_dokumenta_idtip_dokumenta`, `dobavljaci_iddobavljaci`, `zanimanje_idzanimanje`, `korisnici_idkorisnici`),
+  INDEX `fk_dokument_tip_dokumenta1_idx` (`tip_dokumenta_idtip_dokumenta` ASC),
+  INDEX `fk_dokument_dobavljaci1_idx` (`dobavljaci_iddobavljaci` ASC),
+  INDEX `fk_dokument_korisnici1_idx` (`korisnici_idkorisnici` ASC),
+  CONSTRAINT `fk_dokument_tip_dokumenta1`
+    FOREIGN KEY (`tip_dokumenta_idtip_dokumenta`)
+    REFERENCES `mydb`.`tip_dokumenta` (`idtip_dokumenta`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dokument_dobavljaci1`
+    FOREIGN KEY (`dobavljaci_iddobavljaci`)
+    REFERENCES `mydb`.`dobavljaci` (`iddobavljaci`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dokument_korisnici1`
+    FOREIGN KEY (`korisnici_idkorisnici`)
+    REFERENCES `mydb`.`korisnici` (`idkorisnici`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`stavke_dokumenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`stavke_dokumenta` (
+  `idstavke_dokumenta` INT NOT NULL,
+  `kolicina` INT NULL,
+  `cijena` INT NULL,
+  `artikli_idartikli` INT NOT NULL,
+  `dokument_iddokument` INT NOT NULL,
+  PRIMARY KEY (`idstavke_dokumenta`, `artikli_idartikli`, `dokument_iddokument`),
+  INDEX `fk_stavke_dokumenta_artikli_idx` (`artikli_idartikli` ASC),
+  INDEX `fk_stavke_dokumenta_dokument1_idx` (`dokument_iddokument` ASC),
+  CONSTRAINT `fk_stavke_dokumenta_artikli`
+    FOREIGN KEY (`artikli_idartikli`)
+    REFERENCES `mydb`.`artikli` (`idartikli`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_stavke_dokumenta_dokument1`
+    FOREIGN KEY (`dokument_iddokument`)
+    REFERENCES `mydb`.`dokument` (`iddokument`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
